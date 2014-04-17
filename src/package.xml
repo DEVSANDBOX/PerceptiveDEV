@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>ProcessInstallations</members>
+        <members>ProcessInstallations_CreateAsset</members>
+        <members>ProcessInstallations_CreateCase</members>
+        <members>ProcessInstallations_CreateLicense</members>
+        <members>ProcessInstallations_CreateLicenseCase</members>
+        <members>ProcessInstallations_CreateServer</members>
+        <members>ProcessInstallations_GetOpportunity</members>
+        <members>ProcessInstallations_GetProducts</members>
+        <members>ProcessInstallations_GetSwapAssets</members>
+        <members>ProcessInstallations_GetSwapLicenses</members>
+        <members>ProcessInstallations_InactivateAssetItem</members>
+        <members>ProcessInstallations_InactivateLicense</members>
+        <members>ProcessInstallations_NonCoreProducts</members>
+        <members>ProcessInstallations_getServers</members>
+        <name>ApexClass</name>
+    </types>
+    <version>29.0</version>
+</Package>
