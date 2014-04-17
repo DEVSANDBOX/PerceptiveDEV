@@ -14,6 +14,7 @@
         <members>ProcessInstallations_InactivateAssetItem</members>
         <members>ProcessInstallations_InactivateLicense</members>
         <members>ProcessInstallations_NonCoreProducts</members>
+        <members>ProcessInstallations_Rearrange</members>
         <members>ProcessInstallations_getServers</members>
         <name>ApexClass</name>
     </types>

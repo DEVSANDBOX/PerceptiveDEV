@@ -12,7 +12,7 @@ public class ProcessInstallations_GetProducts
             Boolean ProductsFound;
             
         //get list of LineItems
-        List<OpportunityLineItem> OppLineItems = (List <OpportunityLineItem>)(Database.query('Select Id,Part_number__c,Opportunity.AccountId,Opportunity.Account.Name,Opportunity.OwnerID,OpportunityId,Opportunity.Opportunity_Number__c,Opportunity.Type,Originating_Company__c,  Opportunity.Admin_Contact__r.Name, Opportunity.Admin_Contact__r.Email,Opportunity.Admin_Contact__r.Phone,Server__c,Price_Type__c,Quantity,Return__c,PricebookEntry.Product2.Core_Product__c,PricebookEntry.Product2.Environment__c,PricebookEntry.Product2.Failover_Environments_Allowed__c,PricebookEntry.Product2.part_number__c,PricebookEntry.Product2.Failover_Environments_Needed__c,PricebookEntry.Product2.Failover_Licenses_Allowed__c,PricebookEntry.Product2.Exclude_from_Failover_Clone__c,PricebookEntry.Product2.Exclude_from_Test_Clone__c,PricebookEntry.Product2.Id,PricebookEntry.Product2.License_Required__c,PricebookEntry.Product2.Name,PricebookEntry.Product2.Parent_Product__r.Product_Model__r.Name,PricebookEntry.Product2.Parent_Product__r.Name,PricebookEntry.Product2.Product_Model__c,   PricebookEntry.Product2.Product_Model__r.Asset_Required__c,PricebookEntry.Product2.Product_Model__r.Family__c,PricebookEntry.Product2.Product_Model__r.Line__c,PricebookEntry.Product2.Product_Model__r.Model__c,              PricebookEntry.Product2.Product_Model__r.Name,PricebookEntry.Product2.Product_Model__r.Series__c,PricebookEntry.Product2.SMSA_Product__c,PricebookEntry.Product2.SMSA_Product__r.Product_Model__r.Name,PricebookEntry.Product2.Test_Environments_Allowed__c,PricebookEntry.Product2.Test_Environments_Needed__c,PricebookEntry.Product2.Test_Licenses_Allowed__c,PricebookEntry.Product2.Replicate_Full_Environment__c,PricebookEntry.Product2.Use_Sizing_Tool__c,PricebookEntry.Product2.Replicate_Assets__c FROM OpportunityLineItem Where OpportunityId = :oppId'));
+        List<OpportunityLineItem> OppLineItems = (List <OpportunityLineItem>)(Database.query('Select Id,Part_number__c,Opportunity.AccountId,Opportunity.Account.Name,Opportunity.OwnerID,OpportunityId,Opportunity.Opportunity_Number__c,Opportunity.Type,Originating_Company__c,  Opportunity.Admin_Contact__r.Name, Opportunity.Admin_Contact__r.Email,Opportunity.Admin_Contact__r.Phone,Server__c,Price_Type__c,Quantity,Return__c,PricebookEntry.Product2.Core_Product__c,PricebookEntry.Product2.Solution_Product__c,PricebookEntry.Product2.Environment__c,PricebookEntry.Product2.Failover_Environments_Allowed__c,PricebookEntry.Product2.part_number__c,PricebookEntry.Product2.Failover_Environments_Needed__c,PricebookEntry.Product2.Failover_Licenses_Allowed__c,PricebookEntry.Product2.Exclude_from_Failover_Clone__c,PricebookEntry.Product2.Exclude_from_Test_Clone__c,PricebookEntry.Product2.Id,PricebookEntry.Product2.License_Required__c,PricebookEntry.Product2.Name,PricebookEntry.Product2.Parent_Product__r.Product_Model__r.Name,PricebookEntry.Product2.Parent_Product__r.Name,PricebookEntry.Product2.Product_Model__c,   PricebookEntry.Product2.Product_Model__r.Asset_Required__c,PricebookEntry.Product2.Product_Model__r.Family__c,PricebookEntry.Product2.Product_Model__r.Line__c,PricebookEntry.Product2.Product_Model__r.Model__c,              PricebookEntry.Product2.Product_Model__r.Name,PricebookEntry.Product2.Product_Model__r.Series__c,PricebookEntry.Product2.SMSA_Product__c,PricebookEntry.Product2.SMSA_Product__r.Product_Model__r.Name,PricebookEntry.Product2.Test_Environments_Allowed__c,PricebookEntry.Product2.Test_Environments_Needed__c,PricebookEntry.Product2.Test_Licenses_Allowed__c,PricebookEntry.Product2.Replicate_Full_Environment__c,PricebookEntry.Product2.Use_Sizing_Tool__c,PricebookEntry.Product2.Replicate_Assets__c FROM OpportunityLineItem Where OpportunityId = :oppId'));
     
       
  
@@ -43,18 +43,23 @@ public class ProcessInstallations_GetProducts
                     if (subItemKey)
                     {
                         List<Product_Sub_Item__c> ProductSubItemsList = productsubItems.get(LineItemRec.PricebookEntry.Product2.Id);
-                        if (ProductSubItemsList.size() > 0) {
+                        if (ProductSubItemsList.size() > 0) 
+                        {
                             system.debug('productSubItemsList: ' + productSubItemsList);
                             subItems.put(LineItemProductID, ProductSubItemsList);           //add any subproducts found so can check if they have subproducts
                             productsfound = true;           //subproducts found for line item.
                             system.debug('productsfound' + productsfound);
-                        }else {
+                        }
+                        else 
+                        {
                             system.debug('no Key found in ProductSubItemsList');
                             ProductstoProcess.putall(AddProductsToMap(createProductRecsfromLineItems(LineItemRec), ProductstoProcess));   
                             productsfound = false;              //no subproducts found for line item
                             system.debug('productsfound' + productsfound);
                         }
-                    }else{
+                    }
+                    else
+                    {
                         system.debug('no Key found in ProductSubItemsList');
                         ProductstoProcess.putall(AddProductsToMap(createProductRecsfromLineItems(LineItemRec), ProductstoProcess));    
                         productsfound = false;              //no subproducts found for line item
@@ -63,40 +68,52 @@ public class ProcessInstallations_GetProducts
         
                     //****filter through if any subitems.  all these items will get put into map with opportunityLineItems
                     //by the time we have gotten to the 'Products found'
-                    if (productsfound){
+                    if (productsfound)
+                    {
                         do{
-                            if (subItems.size() > 0 ){
+                            if (subItems.size() > 0 )
+                            {
                                 productSubitemstocheck.putall(subItems);            //all subitems still need to check for additional subitems
                                 system.debug('productSubitemstocheck: ' + productSubitemstocheck);
                                 subItems.clear();                                   //remove previous subitems so they are not combined with new sub items.
                                 List<ID> ProductSubitemsToCheckKeySet = new List<ID>(productSubitemstocheck.keyset());                      //define id set to hold Keyset Ids
                                 system.debug('ProductSubitemsToCheckKeySet:' + ProductSubitemsToCheckKeySet);
-                                for(ID keyset : ProductSubitemsToCheckKeySet ){
+                                for(ID keyset : ProductSubitemsToCheckKeySet )
+                                {
                                     system.debug('keyset - ProductSubitemsToCheckKeySet: ' + keyset);
-                                    For(Product_Sub_Item__c subItem: productSubitemstocheck.get(keyset)){
-            
+                                    For(Product_Sub_Item__c subItem: productSubitemstocheck.get(keyset))
+                                    {            
                                         set<id> subItemIDSet = new set<id>();
                                         system.debug('subItemRec - funneling through keyset: ' + subItem);
                                         subItemIDset.clear();
                                         subItemIDSet.add(subItem.id);
                                         subproduct = loadProductSubItems(subItemIDSet);
                                         system.debug('subProduct - in do: ' + subProduct);
-                                        if (subproduct.size() > 0) {
+                                        if (subproduct.size() > 0) 
+                                        {
                                             productsfound = true;
                                             system.debug('productsfound - in do: ' + productsfound);
-                                            try {
+                                            try 
+                                            {
                                                 List<Product_Sub_Item__c> SubProductItemsList = subproduct.get(subItem.id);
-                                                if(SubProductItemsList.size() > 0) {
+                                                if(SubProductItemsList.size() > 0) 
+                                                {
                                                     system.debug('SubProductItemsList: ' + SubProductItemsList);
                                                     subItems.put(subItem.id, SubProductItemsList);
-                                                }else{
+                                                }
+                                                else
+                                                {
                                                     productsToProcess.putall(AddProductsToMap(createProductRecsfromSubItems(subItem, lineItemRec), ProductstoProcess)); 
                                                 }
-                                            }catch(exception subItemsException){
+                                            }
+                                            catch(exception subItemsException)
+                                            {
                                                 system.debug('subItemsException:' + subItemsException);
                                                 productsToProcess.putall(AddProductsToMap(createProductRecsfromSubItems(subItem, lineItemRec), ProductstoProcess)); 
                                             }
-                                        }else {         //no subitems - all records get processed
+                                        }
+                                        else 
+                                        {         //no subitems - all records get processed
                                             system.debug('in do - subItem from productSubItemstoCheck: ' + subItem);
                                             system.debug('in do - lineITemRec from productSubItemstoCheck: ' + lineItemRec);
                                             productsToProcess.putall(AddProductsToMap(createProductRecsfromSubItems(subItem, lineItemRec), ProductstoProcess));     ///check this line - where should it go
@@ -107,15 +124,20 @@ public class ProcessInstallations_GetProducts
                                 }
                                 system.debug('productSubItemstocheck: ' + productSubItemstocheck);
                                 productSubitemstocheck.clear(); 
-                            }else{
+                            }
+                            else
+                            {
                                 productsfound = false;
                             }   
                         } while(productsfound);
                     }       
                 }
-            }else {
+            }
+            else 
+            {
                 //all products get added to productsToProcess
-                for (OpportunityLineItem lineItem : OppLineItems ){
+                for (OpportunityLineItem lineItem : OppLineItems )
+                {
                     ProductstoProcess.putall(AddProductsToMap(createProductRecsfromLineItems(lineItem), ProductstoProcess)); 
                 }   
             }       
@@ -157,19 +179,23 @@ public class ProcessInstallations_GetProducts
                                                                                         
         system.debug('subItemRecs: ' +subItemRecs);
         if (subItemRecs.size()>0 )
-        { 
-        
-            for(Product_Sub_Item__c SubRec : subItemRecs){  
+        {         
+            for(Product_Sub_Item__c SubRec : subItemRecs)
+            {  
                 //get map entry - add subrec
                 boolean productKey; 
-                if (ProductSubItemMap.size() > 0){  
+                if (ProductSubItemMap.size() > 0)
+                {  
                      productKey = ProductSubItemMap.containsKey(subRec.Parent_Product__c);
-                }else{
+                }
+                else
+                {
                     productKey = false;
                 }
                 system.debug('productKey: ' + productKey);
                 List<Product_Sub_Item__c> tmpItemList = new List<Product_Sub_Item__c>();
-                if (productKey){        
+                if (productKey)
+                {        
                         tmpItemList = ProductSubItemMap.get(subRec.Parent_Product__c);
                 }       
                 tmpItemList.add(subRec);

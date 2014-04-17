@@ -445,13 +445,22 @@ public class ProcessInstallations
                 } 
 }       
                 
-                If(AssetItemsToUpdate.size() > 0){
+                If(AssetItemsToUpdate.size() > 0)
+                {
                     system.debug('AssetItemsToUpdate: ' + AssetItemsToUpdate);
                     update AssetItemsToUpdate;
                 }
-                If(SwapLicenseKeyMap.size() > 0){
+                If(SwapLicenseKeyMap.size() > 0)
+                {
                     update LicenseKeysToUpdate;
                 }       
+                
+                if(!LineItemProductMap.keyset().isEmpty())             //Added to Update the Parent Asset and Hide on Portal Fields for Solution product changes
+                {
+                ProcessInstallations_Rearrange.Rearrange_Asset_Items(LineItemProductMap,OpportunityRec);
+                }
+                
+                
                 OpportunityRec .InstallationStatus__c = 'Completed';
             //    update OpportunityRec ;
             } 
@@ -469,6 +478,9 @@ public class ProcessInstallations
         {
           createInstallations_Saperion.create(Saperion_map,ProductRec_ProductModelIds_Saperion,isFuture);        
         }
+        
+        
+        
     }   
     public static Map<ID,Product_Model__c> ProductModelMap(Set<ID> ProductModelRecIds){
         Map<ID, Product_Model__c> ProductModelMap_Return = new Map<ID,Product_Model__c>() ;
@@ -573,7 +585,8 @@ public class ProcessInstallations
       insert opp;
       return opp;
     }
-    public static Account createAccount(){
+    public static Account createAccount()
+    {
         Account acc = new Account();
         acc.Name = 'testAccount';
         acc.MDM_Sold_To_Number__c = '1234';
