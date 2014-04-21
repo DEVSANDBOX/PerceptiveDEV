@@ -173,7 +173,8 @@ public class ProcessInstallations_GetProducts
                                                                                         Product__r.Replicate_Full_Environment__c,
                                                                                         Product__r.Use_Sizing_Tool__c,
                                                                                         Product__r.Replicate_Assets__c,                                                                                        
-                                                                                        Quantity__c
+                                                                                        Quantity__c,
+                                                                                        Ratio__c
                                                                                         FROM Product_Sub_Item__c 
                                                                                         WHERE Active__c = true AND Parent_Product__c in :parentID]);
                                                                                         
@@ -229,6 +230,7 @@ public class ProcessInstallations_GetProducts
             newSubItemProductRec.Replicate_Full_Environment__c = subItemRec.Product__r.Replicate_Full_Environment__c;
             newSubItemProductRec.Product_Bundled__c = true;
             newSubItemProductRec.SubProduct_Quantity__c = subItemRec.Quantity__c;
+            newSubItemProductRec.Sub_Product_Ratio__c = subItemRec.Ratio__c;
             newSubItemProductRec.Name_Abbrev__c = subitemRec.Product__r.id;         //used this field because couldn't populate ID in my temp table
             newSubItemProductRec.Use_Sizing_Tool__c= subitemRec.Product__r.Use_Sizing_Tool__c;                   
             newSubItemProductRec.Replicate_Assets__c= subitemRec.Product__r.Replicate_Assets__c;                  
